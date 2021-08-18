@@ -74,13 +74,13 @@ already been done for the following requests.
 
 ## Start a local server
 
-```bash
+```plaintext
 ./gemdrive-server -dir dir1 -dir dir2
 ```
 
 ## List the root directory
 
-```bash
+```plaintext
 curl localhost:3838/gemdrive/index/list.json
 
 ```
@@ -96,7 +96,7 @@ curl localhost:3838/gemdrive/index/list.json
 
 ## List a subdirectory
 
-```bash
+```plaintext
 curl localhost:3838/gemdrive/index/dir1/list.json
 
 ```
@@ -119,34 +119,34 @@ curl localhost:3838/gemdrive/index/dir1/list.json
 
 ## Read a file
 
-```bash
+```plaintext
 curl localhost:3838/dir1/f1.txt
 
 ```
 
-```
+```plaintext
 Hi there
 ```
 
 ## Read part of a file
 
-```bash
+```plaintext
 curl -H "Range: bytes=0-3" localhost:3838/dir1/f1.txt
 
 ```
 
-```
+```plaintext
 Hi t
 ```
 
 ## Upload a file
 
-```bash
+```plaintext
 curl -X PUT localhost:3838/dir1/f1.txt?overwrite=true -d 'New text'
 curl localhost:3838/dir1/f1.txt
 
 ```
-```
+```plaintext
 New text
 ```
 

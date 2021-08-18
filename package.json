@@ -19,9 +19,10 @@
     "url": "https://github.com/gemdrive/gemdrive.io/issues"
   },
   "homepage": "https://github.com/gemdrive/gemdrive.io#readme",
-  "dependencies": {},
+  "dependencies": {
+    "highlight.js": "^11.2.0"
+  },
   "devDependencies": {
-    "highlightjs": "^9.16.2",
     "marked": "^3.0.0"
   }
 }

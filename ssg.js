@@ -3,11 +3,15 @@
 const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
-const hljs = require('highlightjs');
+const hljs = require('highlight.js/lib/common');
+
+hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
 
 marked.setOptions({
   highlight: function(code, lang) {
-    const highlighted = hljs.highlightAuto(code);
+    const highlighted = hljs.highlight(code, {
+      language: lang,
+    });
     return highlighted.value;
   },
 });
