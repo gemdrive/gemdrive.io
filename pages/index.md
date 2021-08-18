@@ -10,8 +10,12 @@ protocol), etc. For detailed comparisons with other tools, see [this page][1]
 
 The goal of GemDrive is to provide the "missing hard drive for the web". That
 means providing a way for web apps to read and write to a server in a similar
-way as a normal filesystem. It seeks to do this by adding the minimal
-necessary layer on top of standard HTTP.
+way as a normal filesystem. If you've ever used an app that supports using
+Google Drive to store your data, it's the same idea, just much simpler and open
+source.
+
+GemDrive seeks to do this by adding the minimal necessary layer on top of
+standard HTTP.
 
 HTTP already provides most of the necessary functionality to do this. The
 following HTTP request types already behave in fairly intuitive ways for
@@ -35,7 +39,8 @@ features are what make GemDrive unique:
 * Extremely simple. You can create a useful GemDrive client or server in a few
   lines of code, with no libraries required. A central goal is for the protocol
   to be simple enough that if you were going to implement HTTP filesystem-like
-  functionality yourself, you may as well implement GemDrive.
+  functionality yourself (as [many projects][3] already have), you may as well
+  implement GemDrive.
 * The protocol supports rich functionality, but is intended to be implemented
   incrementally. For example, if you only need public reads, there's no need to
   implement writes or auth to still be considered compliant.
@@ -166,3 +171,5 @@ A few things to note:
 [1]: /comparisons/
 
 [2]: /protocol/
+
+[3]: https://github.com/awesome-selfhosted/awesome-selfhosted#file-transfer---web-based-file-managers
