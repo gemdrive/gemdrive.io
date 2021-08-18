@@ -1,0 +1,27 @@
+{
+  "name": "gemdrive.io",
+  "version": "0.1.0",
+  "description": "GemDrive website",
+  "main": "ssg.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gemdrive/gemdrive.io.git"
+  },
+  "author": "Anders Pitman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gemdrive/gemdrive.io/issues"
+  },
+  "homepage": "https://github.com/gemdrive/gemdrive.io#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "highlightjs": "^9.16.2",
+    "marked": "^3.0.0"
+  }
+}
