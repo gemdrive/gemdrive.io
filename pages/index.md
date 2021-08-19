@@ -73,6 +73,28 @@ in the Authorization: Bearer header or the access_token query parameter.
 Alternatively you can mark a directory or file as public. We'll assume that has
 already been done for the following requests.
 
+
+## Preliminaries
+
+Before we run the examples, first create some dummy data to work on:
+
+```plaintext
+mkdir -p dir1/subdir1
+echo Hi there > dir1/f1.txt
+mkdir dir2
+echo Hello there > dir2/f2.txt
+```
+
+You should now have the following directory structure on disk:
+
+```plaintext
+dir1/
+    f1.txt
+    subdir1/
+dir2/
+    f2.txt
+```
+
 ## Start a local server
 
 ```plaintext
