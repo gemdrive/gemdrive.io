@@ -1,9 +1,10 @@
 # What is GemDrive?
 
-GemDrive is a protocol and [reference implementation][0] for bringing
-filesystem-like functionality to web browsers and other HTTP clients. It shares
-similarities with WebDAV, NFS, FTP, Inrupt Solid, remoteStorage, Amazon S3 (the
-protocol), etc. For detailed comparisons with other tools, see [this page][1]
+GemDrive is a [protocol](./protocol/) and [reference implementation][0] for
+bringing filesystem-like functionality to web browsers and other HTTP clients.
+It shares similarities with WebDAV, NFS, FTP, Inrupt Solid, remoteStorage,
+Amazon S3 (the protocol), etc. For detailed comparisons with other tools, see
+[this page][1]
 
 
 # Motivation
