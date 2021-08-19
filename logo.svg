@@ -1,15 +1,37 @@
-<svg viewBox="0 0 100 100" version="1.1" baseProfile="full" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 120 120" version="1.1" baseProfile="full" width="100" height="100"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
 
-  <g>
-    <polygon points="20,30 30,20 70,20 80,30 70,40 30,40" stroke="#333" stroke-width="2" fill="none" />
-  </g>
+  <style>
+    #background {
+      fill: #d3d3d3
+    }
+    #gem {
+      stroke: #3d3d3d;
+      stroke-width: 2.5;
+    }
+    .top-gem {
+      --gemColor: #00C8F0;
+    }
+    .middle-gem {
+      --gemColor: #4080FF;
+    }
+    .bottom-gem {
+      --gemColor: #7D64E3;
+    }
+  </style>
 
-  <g transform="translate(0, 10)">
-    <polygon points="20,30 30,20 70,20 80,30 70,40 30,40" stroke="#333" stroke-width="2" fill="none" />
-  </g>
+  <defs>
+    <g id='gem'>
+      <!-- Separate path for outside line so it can have sharp edges -->
+      <path d="M 0 10 L 10 0 L 70 0 L 80 10 L 70 20 L 10 20 Z" fill="var(--gemColor)" />
+      <path d="M 0 10 L 10 0 L 30 10 L 40 0 L 50 10 L 70 0 L 80 10 L 70 20 L 50 10 L 40 20 L 30 10 L 10 20 L 0 10 L 80 10" fill="none" stroke-linejoin='round' />
+    </g>
+  </defs>
 
-  <g transform="translate(0, 20)">
-    <polygon points="20,30 30,20 70,20 80,30 70,40 30,40" stroke="#333" stroke-width="2" fill="none" />
-  </g>
+  <rect id='background' width='120' height='120' />
+  <use xlink:href="#gem" class='top-gem' x='20' y='20'/>
+  <use xlink:href="#gem" class='middle-gem' x='20' y='50'/>
+  <use xlink:href="#gem" class='bottom-gem' x='20' y='80'/>
 
 </svg>
