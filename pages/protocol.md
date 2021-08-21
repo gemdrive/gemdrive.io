@@ -1,3 +1,5 @@
+# Version: 0.1.0
+
 # Core concepts
 
 The GemDrive protocol is designed with the following guiding principles:
@@ -37,9 +39,9 @@ curl --head localhost:3838/path/to/file.txt
 
 **`GET /<path>`**
 
-File reads are the most basic type of request. These are supported as vanilla
-HTTP GET requests. Support for HTTP GET is required. Support for HTTP Range
-requests is highly encourage, and may be required in future protocol revisions.
+File reads are supported as vanilla HTTP GET requests. Support for HTTP GET is
+required. Support for HTTP Range requests is highly encourage, and may be
+required in future protocol revisions.
 
 Technically, a static webserver is a valid GemDrive server. In practice, it
 should set CORS headers in order to be useful to web apps.
@@ -74,8 +76,10 @@ This request must return a JSON object of the form:
 
 Where:
 
+* Items in the directory are included in the `children` attribute, keyed by
+  item name.
 * Directory item names end in "/", file item names do not.
-* `size` is an integer.
+* `size` is an integer and represents bytes.
 * `modTime` is an ISO 8601 string.
 
 ## Examples:
@@ -90,12 +94,12 @@ curl localhost:3838/gemdrive/index/path/to/directory/list.json
 
 Most of the remaining requests should nearly always be protected against public
 access, as they can modify the state of the server. The GemDrive protocol
-specifies an extremely simple capability-based security system for
-implementing authorized requests. This system revolves around the concept of
-keys. Keys exist in a tree. The root key must be retrieved by the system
-administrator when the server is first started. Any key can be used to create
-other keys which have equal-or-lesser privileges from the parent key. If a key
-is deleted, all descendant keys must also be removed from the system.
+specifies a simple capability-based security system for implementing authorized
+requests. This system revolves around the concept of keys. Keys exist in a
+tree. The root key must be retrieved by the system administrator when the
+server is first started. Any key can be used to create other keys which have
+equal-or-lesser privileges from the parent key. If a key is deleted, all
+descendant keys must also be removed from the system.
 
 Keys are included in requests either by setting the `access_token` query
 parameter, or the `Authorization: Bearer` header.
@@ -234,12 +238,12 @@ curl -X PATCH localhost:3838/path/to/file.txt?offset=10
 ```
 
 
-# Retrieve a downsized file
+# Retrieve a downsized image file
 
 **`/gemdrive/images/<pixel_size>/<path>`**
 
 GemDrive specifices basic support for the server to provide downsized versions
-of image files. While this may seem a strange feature to include in a barebones
+of image files. While this may seem a strange feature to include in a minimal 
 protocol, in practice this functionality is essential for any sort of useful
 file explorer or gallery apps. The goal is to support thumbnail, preview, and
 fullscreen image sizes. Currently only 3 sizes are required to support this
@@ -253,6 +257,9 @@ In the request path, `<pixel_size>` represents the largest dimension of the
 image. The server must return an image that is equal to that number in either
 width or height, while preserving the original aspect ratio, and not being
 larger than that number in the other dimension.
+
+Currently no specific image formats are required to be supported, though JPEG
+and PNG get you pretty far.
 
 ## Examples:
 
@@ -307,7 +314,7 @@ may be nested to arbitrary depth:
 
 It is particularly useful for operations like directory synchronization, and
 can greatly improve performance for deeply nested trees by reducing the number
-of requests necessary.
+of requests necessary to explore the tree.
 
 
 ## Parameters 
