@@ -13,7 +13,7 @@ It is currently targeted at developers and self-hosters, but will hopefully be
 useful to a wider audience in the long run.
 
 
-# Motivation
+# Why does it exist?
 
 The goal of GemDrive is to provide a "hard drive" for the web. That means
 providing a way for web apps to read and write to a server in a similar way as
@@ -24,7 +24,7 @@ simpler, open source, and providing extra features that enable some really cool
 stuff.
 
 To understand some of the motivations behind GemDrive, consider how you would
-accomplish the following with today's tools:
+accomplish the following with tools available today:
 
 * Share a cloud storage folder with someone (including write permissions)
   without requiring them to have an account with the provider.
@@ -55,28 +55,13 @@ I'm certain there are nice solutions to some of these problems (and would
 appreciate people letting me know about them). GemDrive is pretty good at
 solving all of them.
 
-The combination of the following features is what makes GemDrive unique:
 
-* Extremely simple. You can create a useful GemDrive client or server in a few
-  lines of code, with no libraries required ([here's][9] a JavaScript server in <100
-  lines of code). A central goal is for the protocol
-  to be simple enough that if you were going to implement HTTP filesystem-like
-  functionality yourself (as [many projects][3] already have), you may as well
-  implement GemDrive instead.
-* The protocol supports rich functionality, but is intended to be implemented
-  incrementally. For example, if you only need public reads, there's no need to
-  implement writes or auth to still be considered useful and compliant.
-* Designed to combine well with other tools. For example, you could easily
-  add GemDrive compatibility to a Solid server, or nginx/Caddy/etc. You can
-  also turn any static web server into a GemDrive server by pre-generating the
-  filesystem index.
-* Specified support for basic image resizing. This is crucial for things like
-  remote file explorers to generate thumbnails and previews.
+# How is it implemented?
 
+**The** central tenet of GemDrive is to be as simple as reasonable.
 
-# What does it look like?
-
-GemDrive seeks to add the minimal necessary layer on top of standard HTTP.
+The protocol seeks to add the minimal necessary layer on top of standard HTTP
+to do its job.
 
 The following HTTP request types already behave in fairly intuitive ways for
 filesystem operations:
@@ -88,21 +73,28 @@ filesystem operations:
 
 However, a few pieces are still missing/underspecified:
 
-* Listing directory contents.
+* Listing directory contents. GemDrive would be useful if it *only* added this.
 * Partial writes (update only a portion of a file).
 * Authentication and authorization.
 * Copying between remote servers without downloading the data to the client.
+* Protections against accidentally deleting large amounts of data.
 
+GemDrive simply provides opinionated answers for these pieces.
+
+
+# What does it look like?
 
 Here's a taste of GemDrive in action. For a complete description, see the
 [protocol page][2].
 
-Note that for brevity the requests below don't show the necessary auth. When
-the server starts up it prints a master key which then must be included either
-in the Authorization: Bearer header or the access_token query parameter.
+Note that for brevity the requests below don't show the usual auth. When the
+server starts up it prints a master key which then must be included either in
+the `Authorization: Bearer <token>` header or the `access_token` query
+parameter.
 
 Alternatively you can mark a directory or file as public. We'll assume that has
-already been done for the following requests.
+already been done for the following requests, although it's something you
+would pretty much never want to do even on localhost.
 
 
 ## Preliminaries
