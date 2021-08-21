@@ -331,4 +331,34 @@ curl localhost:3838/gemdrive/index/path/to/directory/tree.json?depth=2
 ```
 
 
+# TODO - requests below here
 
+
+# List keys
+
+**`GET /gemdrive/keys`**
+
+
+# Create a key (REST)
+
+**`POST /gemdrive/keys`**
+
+
+# Delete a key
+
+**`DELETE /gemdrive/keys/<key>`**
+
+
+# Make an item public
+
+**`PUT /gemdrive/public/<path>`**
+
+
+# Make an item private
+
+**`DELETE /gemdrive/public/<path>`**
+
+
+# Remote GET
+
+**`POST /gemdrive/remote-get`**
