@@ -1,30 +1,89 @@
 # What is GemDrive?
 
 GemDrive is a [protocol](./protocol/) and [reference implementation][0] for
-bringing filesystem-like functionality to web browsers and other HTTP clients.
-It shares similarities with WebDAV, NFS, FTP, Inrupt Solid, remoteStorage,
-Amazon S3 (the protocol), etc. For detailed comparisons with other tools, see
-[this page][1]
+bringing remote filesystem functionality to web browsers and other HTTP
+clients.  It shares similarities with WebDAV, NFS, FTP, Inrupt Solid,
+remoteStorage, Amazon S3, Google Drive, etc. For detailed comparisons with
+other tools, see [this page][1].
+
+GemDrive grew out of a combination of needs I had for managing my own data, as
+well as needs I ran into at my day job working with large genomic datasets.
+
+It is currently targeted at developers and self-hosters, but will hopefully be
+useful to a wider audience in the long run.
 
 
 # Motivation
 
-The goal of GemDrive is to provide the "missing hard drive for the web". That
-means providing a way for web apps to read and write to a server in a similar
-way as a normal filesystem. If you've ever used an app that supports using
-Google Drive to store your data, it's the same idea, just much simpler and open
-source.
+The goal of GemDrive is to provide a "hard drive" for the web. That means
+providing a way for web apps to read and write to a server in a similar way as
+a normal filesystem (files and folders), rather than the database query
+paradigm normally used for the web.  If you've ever used an app that supports
+using Google Drive to store your data, GemDrive is the same idea, but much
+simpler, open source, and providing extra features that enable some really cool
+stuff.
 
-GemDrive seeks to do this by adding the minimal necessary layer on top of
-standard HTTP.
+To understand some of the motivations behind GemDrive, consider how you would
+accomplish the following with today's tools:
 
-HTTP already provides most of the necessary functionality to do this. The
-following HTTP request types already behave in fairly intuitive ways for
+* Share a cloud storage folder with someone (including write permissions)
+  without requiring them to have an account with the provider.
+* Host a website from your cloud storage.
+  * Major cloud storage providers used to support this, but I'm not aware of
+    any that still do (see [here][6] and [here][7]).
+* Write a web app to access a user's cloud storage.
+  * Google Drive has been the gold standard for this in the past, but it
+    requires complicated auth flows and libraries, and recent versions are
+    riddled with [confusing limitations][5].
+* Host your own cloud storage server, while still being able to directly
+  transfer data from your server to someone else's server without first
+  downloading the data locally.
+* Publicly share a large folder that can be recursively/partially downloaded.
+  * rsync daemon doesn't encrypt the data in transit.
+  * rsync over SSH depends on sharing SSH keys or creating user accounts.
+  * rsync requires rsync.
+  * AWS CLI requires credentials, which usually means an AWS account.
+  * Zipping is time consuming, uses extra storage for the zipped file, and
+    makes it difficult to update only a portion of the data.
+* Run a [static site generator][8] for your website entirely within your web
+  browser.
+* Write a web app capable of accessing a user's
+  local hard drive.
+  * The [File System Access API][4] isn't ready yet.
+
+I'm certain there are nice solutions to some of these problems (and would
+appreciate people letting me know about them). GemDrive is pretty good at
+solving all of them.
+
+The combination of the following features is what makes GemDrive unique:
+
+* Extremely simple. You can create a useful GemDrive client or server in a few
+  lines of code, with no libraries required ([here's][9] a JavaScript server in <100
+  lines of code). A central goal is for the protocol
+  to be simple enough that if you were going to implement HTTP filesystem-like
+  functionality yourself (as [many projects][3] already have), you may as well
+  implement GemDrive instead.
+* The protocol supports rich functionality, but is intended to be implemented
+  incrementally. For example, if you only need public reads, there's no need to
+  implement writes or auth to still be considered useful and compliant.
+* Designed to combine well with other tools. For example, you could easily
+  add GemDrive compatibility to a Solid server, or nginx/Caddy/etc. You can
+  also turn any static web server into a GemDrive server by pre-generating the
+  filesystem index.
+* Specified support for basic image resizing. This is crucial for things like
+  remote file explorers to generate thumbnails and previews.
+
+
+# What does it look like?
+
+GemDrive seeks to add the minimal necessary layer on top of standard HTTP.
+
+The following HTTP request types already behave in fairly intuitive ways for
 filesystem operations:
 
 * HTTP GET for reading files, including partial reads (via byte-range
   requests).
-* HTTP PUT for uploading files and creating directories.
+* HTTP PUT for creating/uploading files and creating directories.
 * HTTP DELETE for deleting files and directories.
 
 However, a few pieces are still missing/underspecified:
@@ -34,34 +93,6 @@ However, a few pieces are still missing/underspecified:
 * Authentication and authorization.
 * Copying between remote servers without downloading the data to the client.
 
-Other tools in this space provide solutions to the above. The following
-features are what make GemDrive unique:
-
-* Extremely simple. You can create a useful GemDrive client or server in a few
-  lines of code, with no libraries required. A central goal is for the protocol
-  to be simple enough that if you were going to implement HTTP filesystem-like
-  functionality yourself (as [many projects][3] already have), you may as well
-  implement GemDrive.
-* The protocol supports rich functionality, but is intended to be implemented
-  incrementally. For example, if you only need public reads, there's no need to
-  implement writes or auth to still be considered compliant.
-* Designed to combine well with other tools. For example, you could easily
-  add GemDrive compatibility to a Solid server, or nginx/Caddy/etc. You can
-  also turn any static web server into a (read-only) GemDrive server by
-  enabling CORS and generating a static index.
-* Hosting web pages and static apps from a GemDrive server is a first-class
-  use case. For example, most of my websites (including this one) are served
-  from my personal GemDrive server.
-* Specified support for basic image resizing. This is crucial for things like
-  remote file explorers to generate thumbnails and previews.
-* It's easy to run your own GemDrive server on your local machine and access it
-  over localhost. This provides a way for apps to directly (and securely)
-  access your local filesystem. This opens up a wide range of applications such
-  as browser-based video editing of local files, music players, sync with
-  remote GemDrive servers, etc.
-
-
-# What does it look like?
 
 Here's a taste of GemDrive in action. For a complete description, see the
 [protocol page][2].
@@ -175,19 +206,18 @@ New text
 
 A few things to note:
 
-* GemDrive-specific requests start with /gemdrive/.
-* Non-GemDrive requests are the name as a vanilla webserver (except they must
-  return CORS headers).
+* GemDrive-specific requests start with `/gemdrive/`.
+* Non-GemDrive requests are the name as a vanilla webserver.
 * Requests to the GemDrive index (ie directory listings) start with
-  /gemdrive/index/ and end with list.json, with the directory path in between.
-* Index responses are returned as simple json.
+  `/gemdrive/index/` and end with `list.json`, with the directory path in between.
+* Index responses are returned as simple JSON.
 * File size and modification times are included (to facilitate syncing tools,
   for example).
 * Directory names end in "/", files do not.
-* The protocol is set up in such a way that you can pre-generate the json files
+* The protocol is set up in such a way that you can pre-generate the JSON files
   for the index and serve them as static files alongside your data. So you
-  could host a (read-only) GemDrive instance on a public S3 bucket, for
-  example.
+  could host a (read-only) GemDrive instance on a public S3 bucket (or any
+  other webserver).
 
 [0]: https://github.com/gemdrive/gemdrive-go
 
@@ -196,3 +226,15 @@ A few things to note:
 [2]: /protocol/
 
 [3]: https://github.com/awesome-selfhosted/awesome-selfhosted#file-transfer---web-based-file-managers
+
+[4]: https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API
+
+[5]: https://gdrivemusic.com/help
+
+[6]: https://help.dropbox.com/files-folders/share/public-folder
+
+[7]: https://workspaceupdates.googleblog.com/2015/08/deprecating-web-hosting-support-in.html
+
+[8]: https://jamstack.org/generators/
+
+[9]: https://github.com/gemdrive/gemdrive-ro-server-js/blob/master/index.js
