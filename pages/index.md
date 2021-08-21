@@ -6,8 +6,8 @@ clients.  It shares similarities with WebDAV, NFS, FTP, Inrupt Solid,
 remoteStorage, Amazon S3, Google Drive, etc. For detailed comparisons with
 other tools, see [this page][1].
 
-GemDrive grew out of a combination of needs I had for managing my own data, as
-well as needs I ran into at my day job working with large genomic datasets.
+GemDrive grew out of a combination of needs I had for managing my own data and
+needs I ran into at my day job working with genomics web apps and datasets.
 
 It is currently targeted at developers and self-hosters, but will hopefully be
 useful to a wider audience in the long run.
@@ -31,16 +31,16 @@ accomplish the following with tools available today:
 * Host a website from your cloud storage.
   * Major cloud storage providers used to support this, but I'm not aware of
     any that still do (see [here][6] and [here][7]).
-* Write a web app to access a user's cloud storage.
+* Write a web app to designed to work with the user's personal cloud storage.
   * Google Drive has been the gold standard for this in the past, but it
     requires complicated auth flows and libraries, and recent versions are
     riddled with [confusing limitations][5].
 * Host your own cloud storage server, while still being able to directly
   transfer data from your server to someone else's server without first
-  downloading the data locally.
+  downloading the data locally, using nothing but a web app.
 * Publicly share a large folder that can be recursively/partially downloaded.
   * rsync daemon doesn't encrypt the data in transit.
-  * rsync over SSH depends on sharing SSH keys or creating user accounts.
+  * rsync over SSH requires sharing SSH keys or creating user accounts.
   * rsync requires rsync.
   * AWS CLI requires credentials, which usually means an AWS account.
   * Zipping is time consuming, uses extra storage for the zipped file, and
@@ -73,7 +73,8 @@ filesystem operations:
 
 However, a few pieces are still missing/underspecified:
 
-* Listing directory contents. GemDrive would be useful if it *only* added this.
+* Listing directory contents. GemDrive would be useful if it did nothing but
+  add this.
 * Partial writes (update only a portion of a file).
 * Authentication and authorization.
 * Copying between remote servers without downloading the data to the client.
