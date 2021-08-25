@@ -31,13 +31,18 @@ accomplish the following with tools available today:
 * Host a website from your cloud storage.
   * Major cloud storage providers used to support this, but I'm not aware of
     any that still do (see [here][6] and [here][7]).
-* Write a web app to designed to work with the user's personal cloud storage.
+* Write a web app to designed to work with the user's personal cloud storage,
+  rather than storing data on your servers.
   * Google Drive has been the gold standard for this in the past, but it
     requires complicated auth flows and libraries, and recent versions are
     riddled with [confusing limitations][5].
 * Host your own cloud storage server, while still being able to directly
   transfer data from your server to someone else's server without first
-  downloading the data locally, using nothing but a web app.
+  downloading the data locally.
+  * NextCloud, Seafile, minio, etc provide excellent self-hosted storage, but
+    are missing robust APIs for accessing data from web apps.
+  * Inrupt Solid and remoteStorage are similar to GemDrive. See the
+    [comparisons page](./comparisons/).
 * Publicly share a large folder that can be recursively/partially downloaded.
   * rsync daemon doesn't encrypt the data in transit.
   * rsync over SSH requires sharing SSH keys or creating user accounts.
