@@ -1,4 +1,4 @@
-# Version: 0.1.0
+# Version: 0.2.0
 
 # Core concepts
 
@@ -24,9 +24,8 @@ ie the order they would be implemented in.
 
 **`HEAD /<path>`**
 
-File list operations are supported using vanilla HTTP HEAD requests. Currently
-only `Content-Length` is required to be returned by the server. A custom header
-for `modTime` may be required in the future.
+File list operations are supported using vanilla HTTP HEAD requests. Servers
+should return `Content-Length` and `Last-Modified` headers.
 
 Examples:
 
