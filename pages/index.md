@@ -31,6 +31,8 @@ accomplish the following with tools available today:
 * Host a website from your cloud storage.
   * Major cloud storage providers used to support this, but I'm not aware of
     any that still do (see [here][6] and [here][7]).
+* Use cloud storage as a simple content management system (CMS) for your
+  website.
 * Write a web app to designed to work with the user's personal cloud storage,
   rather than storing data on your servers.
   * Google Drive has been the gold standard for this in the past, but it
