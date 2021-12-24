@@ -35,14 +35,33 @@ differences are mostly in the details.
 
 WebDAV is so close to being what we need, but it's just too complicated.
 
-* GemDrive is much simpler. It's intended for self-hosters to easily run on
+* A GemDrive server is user software, not system administrator software.
+  Everyone is encouraged to run their own server, or even one on each of their
+  devices.
+* GemDrive is generally lower level, with a few notable exceptions such as
+  built-in image resizing.
+* In general, while client complexity is on the same order (though GemDrive is
+  still considerably simpler), server complexity for WebDAV is much higher.
+  This makes it more difficult to have competing implementations, and perhaps
+  more importantly makes it difficult to include compatibility in existing
+  software. GemDrive lends itself very well to being tacked on to other servers
+  as a module.
+* GemDrive is simpler. It's intended for self-hosters to easily run on
   their own devices.
 * WebDAV uses XML. GemDrive uses simple JSON.
-* WebDAV requires special HTTP methods.
+* WebDAV requires special HTTP methods, GemDrive uses only HTTP/1.1 methods.
 * WebDAV implementations don't seem to be very compatible with each other.
+* WebDAV has a heavy focus on file metadata. GemDrive only provides minimal
+  metadata which is already available from the filesystem. This greatly
+  simplifies the state the server must maintain.
 * GemDrive doesn't specify file locking. Something along these lines may be
   added in the future, depending on real-world needs. So far I haven't needed
-  it.
+  it. Again, this adds a lot of state to the server.
+* GemDrive is designed to be run on a normal filesystem which is probably
+  used by other applications, such as running it on your desktop. This means
+  it must be easy to run (no fancy runtimes or build steps) and forgiving of
+  things such as other programs deleting data.
+* GemDrive specifies an auth method that can be shared between implementations.
 
 
 # Amazon S3
